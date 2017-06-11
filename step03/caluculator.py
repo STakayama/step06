@@ -62,12 +62,10 @@ def evaluate_first(tokens):    # *, /, . make token
     first_index = 1
     tokens.insert(0, {'type': 'PLUS'}) # Insert a dummy '+' token
     t_index = 1
+    print tokens
     while t_index < len(tokens):
-        print tokens[t_index]
-        print t_index
+        print 'type'+tokens[t_index-1]['type']
         if tokens[t_index]['type'] == 'NUMBER':
-         #   (token,index)=({'type':'NUMBER','number':tokens[index]['number']},first_index+1)
-            #(token,index)=readNumber(tokens,index)
             if tokens[t_index - 1]['type'] == 'MULTIPLY':
                 first_tokens.pop()
                 (token,index)=({'type': 'NUMBER', 'number':tokens[index-2]['number'] * tokens[t_index]['number']},first_index-1)  
@@ -75,27 +73,22 @@ def evaluate_first(tokens):    # *, /, . make token
                 first_tokens.pop()
                 (token,index)=({'type': 'NUMBER', 'number':tokens[t_index-2]['number'] / tokens[t_index]['number']},first_index-1)
             elif tokens[t_index - 1]['type'] == 'PLUS':
-               # (token,index)=readNumber(tokens,index)
-                print t_index
                 (token,index)=({'type':'PLUS'},first_index-1)#readPlus(tokens,first_index)
-                print t_index
+                print first_tokens
                 first_tokens.append(token)
+                print first_tokens
                 (token,index)=({'type':'NUMBER','number':tokens[t_index]['number']},first_index)
-
-        #        index += 1
                 first_index += 1
             elif tokens[t_index - 1]['type'] == 'MINUS':
-               # (token,index)=readNumber(tokens,index)
                 (token,index)=readMinus(tokens,first_index-1)
                 first_tokens.append(token)
                 (token,index)=({'type':'NUMBER','number':tokens[t_index]['number']},first_index)
-         #       index += 1
                 first_index += 1
             else:
                 print 'Invalid syntax'
-        first_tokens.append(token)
+            first_tokens.append(token)
+        print first_tokens
         t_index += 1
-        print t_index
                         #    first_index += 1
     return first_tokens
 
