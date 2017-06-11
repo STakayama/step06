@@ -64,17 +64,21 @@ def evaluate_first(tokens):    # *, /, . make token
     index = 1
     while index < len(tokens):
         if tokens[index]['type'] == 'NUMBER':
-            if tokens[index - 1]['type'] == 'MULTIPLY':                
-                first_tokens[first_index]['type'] = 'NUMBER'
-                first_tokens[first_index]['number'] = tokens[index-2]['number'] * tokens[index]['number']
+         #   (token,index)=({'type':'NUMBER','number':tokens[index]['number']},first_index+1)
+           # (token,index)=readNumber(tokens,index)
+            if tokens[index - 1]['type'] == 'MULTIPLY':
+                (token,index)=({'type': 'NUMBER', 'number':tokens[index-2]['number'] * tokens[index]['number']},first_index+1)  #数字書いてた分つめる
             elif tokens[index - 1]['type'] == 'DIVIDE':
-                first_tokens[first_index]['type'] = 'NUMBER'
-                first_tokens[first_index]['number']= tokens[index-2]['number'] / tokens[index]['number']
-            elif tokens[index - 1]['type'] == 'PLUS' or 'MINUS':
-                print tokens[index - 1]['type']
-                first_tokens[first_index]['type']=tokens[index - 1]['type']
+                (token,index)=({'type': 'NUMBER', 'number':tokens[index-2]['number'] / tokens[index]['number']},first_index+1)
+            elif tokens[index - 1]['type'] == 'PLUS':
+                (token,index)=readNumber(tokens,index)
+                (token,index)=readPlus(tokens,index-1);
+            elif tokens[index - 1]['type'] == 'MINUS':
+                (token,index)=readNumber(tokens,index)
+                (token,index)=readMinus(tokens,index-1);
             else:
                 print 'Invalid syntax'
+        first_tokens.append(token)
         index += 1
         first_index += 1
                         #    first_index += 1
@@ -85,10 +89,13 @@ def evaluate_second(tokens):   # +, -
     answer = 0
     tokens.insert(0, {'type': 'PLUS'}) # Insert a dummy '+' token
     index = 1
+    print len(tokens)
     while index < len(tokens):
+        print tokens[index]
         if tokens[index]['type'] == 'NUMBER':
             if tokens[index - 1]['type'] == 'PLUS':
                 answer += tokens[index]['number']
+                print tokens[index]['number']
             elif tokens[index - 1]['type'] == 'MINUS':
                 answer -= tokens[index]['number']
 
@@ -118,6 +125,7 @@ def runTest():
     print "==== Test started! ===="
     test("1+2", 3)
     test("1.0+2.1-3", 0.1)
+    test("1.0+2.1*3", 7.3)
     print "==== Test finished! ====\n"
 
 runTest()
