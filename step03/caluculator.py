@@ -68,15 +68,13 @@ def evaluate_first(tokens):    # *, /, . make token
         if tokens[t_index]['type'] == 'NUMBER':
             if tokens[t_index - 1]['type'] == 'MULTIPLY':
                 first_tokens.pop()
-                (token,index)=({'type': 'NUMBER', 'number':tokens[index-2]['number'] * tokens[t_index]['number']},first_index-1)  
+                (token,index)=({'type': 'NUMBER', 'number':tokens[t_index-2]['number'] * tokens[t_index]['number']},first_index-1)  
             elif tokens[t_index - 1]['type'] == 'DIVIDE':
                 first_tokens.pop()
                 (token,index)=({'type': 'NUMBER', 'number':tokens[t_index-2]['number'] / tokens[t_index]['number']},first_index-1)
             elif tokens[t_index - 1]['type'] == 'PLUS':
                 (token,index)=({'type':'PLUS'},first_index-1)#readPlus(tokens,first_index)
-                print first_tokens
                 first_tokens.append(token)
-                print first_tokens
                 (token,index)=({'type':'NUMBER','number':tokens[t_index]['number']},first_index)
                 first_index += 1
             elif tokens[t_index - 1]['type'] == 'MINUS':
@@ -131,8 +129,8 @@ def test(line, expectedAnswer):
 # Add more tests to this function :)
 def runTest():
     print "==== Test started! ===="
-    test("1+2", 3)
-    test("1.0+2.1-3", 0.1)
+#    test("1+2", 3)
+#    test("1.0+2.1-3", 0.1)
     test("1.0+2.1*3", 7.3)
     print "==== Test finished! ====\n"
 
